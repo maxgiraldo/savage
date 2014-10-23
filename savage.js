@@ -20,20 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-(function Savage() {
-    this.VERSION = '0.0.1';
+(function () {
+    var self = this;
+
+    // Create reference to savage object
+    var savage = function(obj) {
+        if (obj instanceof savage) return obj;
+        if (!(this instanceof savage)) return new savage(obj);
+        this._wrapped = obj;
+    };
+
+    // Current Version
+    savage.VERSION = '0.0.1';
+
+    // Node.js compatibility
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = savage;
+        }
+        exports.savage = savage;
+    } else {
+        self.savage = savage;
+    }
+
 }.call(this));
 
-Savage.prototype.edit = function(el) {
-    return {
-        color: function(hex) {
+// Savage.prototype.edit = function(el) {
+//     return {
+//         color: function(hex) {
 
-        }
-    }
-}
+//         }
+//     }
+// }
 
-var eye = new Savage();
-// var $el = Document.getElementById('eye');
+// var eye = new Savage();
+// // var $el = Document.getElementById('eye');
 
-eye.edit($el)
-    .color('#000');
+// eye.edit($el)
+//     .color('#000');
