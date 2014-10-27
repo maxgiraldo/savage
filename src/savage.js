@@ -19,31 +19,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-(function () {
-    var self = this;
+function Savage() {
+    this.VERSION = '0.1';
+    this.default = {
+        width: 100,
+        height: 100
+    }
+}
 
-    // Create reference to savage object
-    var savage = function(obj) {
-        if (obj instanceof savage) return obj;
-        if (!(this instanceof savage)) return new savage(obj);
-        this._wrapped = obj;
-    };
+Savage.prototype.edit = function(el) {
+    return {
+        color: function(hex) {
 
-    // Current Version
-    savage.VERSION = '0.0.1';
-
-}.call(this));
-
-// Savage.prototype.edit = function(el) {
-//     return {
-//         color: function(hex) {
-
-//         }
-//     }
-// }
-
-// var eye = new Savage();
-// // var $el = Document.getElementById('eye');
+        }
+    }
+}
 
 // eye.edit($el)
 //     .color('#000');
