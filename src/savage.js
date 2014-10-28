@@ -52,14 +52,43 @@ Savage.prototype.convert = function(elID) {
 
         $img.replaceWith($svg);
     }, 'xml');
-}
+};
+
+/**
+    Use CSS to edit individual shapes by ID
+**/
 
 Savage.prototype.edit = function($shapeID) {
     var $el = $('#' + $shapeID);
     return {
-        color: function(color) {
+        fill: function(color) {
             $el.removeAttr('style');
             $el.css('fill', color);
         }
     }
-}
+};
+
+/**
+    Return all IDs of the SVG img
+**/
+
+Savage.prototype.getIDs = function($svg) {
+    var allShapes, ids = [];
+    if (!($svg instanceof jQuery)) {
+        var $svg = $('#' + $svg);
+    }
+    allShapes = $svg.children();
+    $.each(allShapes, function(key, shape) {
+        ids.push(shape.id);
+    });
+    return ids;
+};
+
+/**
+    Highlight what parts of the image are editable
+**/
+
+Savage.prototype.highlight = function() {
+};
+
+
