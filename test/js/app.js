@@ -10,8 +10,8 @@ $('#clicky').click(function(){
 });
 
  var $outer_rect = $('#sample').contents().find('#outer-rect');
-
- savage.edit($outer_rect).fill('#fff');
- savage.edit($outer_rect).stroke('#ff002d', '6px');
+ savage.edit($outer_rect)
+    .fill('#fff')
+    .stroke('#ff002d', '6px');
 
 

@@ -29,7 +29,7 @@ function Savage() {
 }
 
 /**
-    Replace image with SVG code
+    Replace image with SVG code if not using <iframe>, <object>, or <embed> elements
 **/
 
 Savage.prototype.convert = function(elID) {
@@ -40,17 +40,13 @@ Savage.prototype.convert = function(elID) {
 
     $.get(imgURL, function(data) {
         var $svg = $(data).find('svg');
-
         if(typeof imgID !== 'undefined') {
             $svg = $svg.attr('id', imgID);
         }
-
         if(typeof imgClass !== 'undefined') {
             $svg = $svg.attr('class', imgClass+' replaced-svg');
         }
-
         $svg = $svg.removeAttr('xmlns:a');
-
         $img.replaceWith($svg);
     }, 'xml');
 };
@@ -65,11 +61,13 @@ Savage.prototype.edit = function($shape) {
         fill: function(color) {
             $shape.removeAttr('style');
             $shape.css('fill', color);
+            return this;
         },
         stroke: function(color, stroke_width) {
             if (stroke_width && !stroke_width.match(/px/)) stroke_width += "px";
             $shape.css('stroke', color);
             $shape.css('stroke-width', stroke_width);
+            return this;
         }
     }
 };
