@@ -1,3 +1,4 @@
 server
-test/*
 src/lib/*
+test/img/*
+bower_components

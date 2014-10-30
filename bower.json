@@ -1,4 +1,20 @@
 {
-    "name": "Savage",
-    "version": "0.0.1"
+  "name": "savage",
+  "version": "0.0.1",
+  "main": "savage.js",
+  "keywords": [
+    "client",
+    "svg",
+    "browser",
+    "image edit",
+    "dom"
+  ],
+  "ignore": [
+    "test",
+    "server",
+    "src/lib/*"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  }
 }

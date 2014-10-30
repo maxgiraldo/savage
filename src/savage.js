@@ -19,12 +19,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 function Savage() {
     this.VERSION = '0.1';
     this.default = {
         width: 100,
         height: 100
-    }
+    };
 }
 
 /**
@@ -58,12 +59,17 @@ Savage.prototype.convert = function(elID) {
     Use CSS to edit individual shapes by ID
 **/
 
-Savage.prototype.edit = function($shapeID) {
-    var $el = $('#' + $shapeID);
+Savage.prototype.edit = function($shape) {
+    if (!($shape instanceof jQuery)) var $shape = $('#' + $shape);
     return {
         fill: function(color) {
-            $el.removeAttr('style');
-            $el.css('fill', color);
+            $shape.removeAttr('style');
+            $shape.css('fill', color);
+        },
+        stroke: function(color, stroke_width) {
+            if (stroke_width && !stroke_width.match(/px/)) stroke_width += "px";
+            $shape.css('stroke', color);
+            $shape.css('stroke-width', stroke_width);
         }
     }
 };
