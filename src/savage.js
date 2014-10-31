@@ -82,14 +82,16 @@ Savage.prototype.edit = function($shape) {
             $shape.attr('fill', color);
             return this;
         },
-        stroke: function(color, stroke_width) {
+        stroke: function(color, stroke_width, stroke_linecap) {
             if (color) {
                 if (color.indexOf('#') === -1) color = '#' + color;
                 $shape.attr('stroke', color);
             }
             if (stroke_width) {
-                if (!stroke_width.match(/px/)) stroke_width += "px";
                 $shape.attr('stroke-width', stroke_width);
+            }
+            if (stroke_linecap) {
+                $shape.attr('stroke-linecap', stroke_linecap);
             }
             return this;
         }
