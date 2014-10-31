@@ -58,6 +58,7 @@ Savage.prototype.edit = function($shape) {
     if (!($shape instanceof jQuery)) var $shape = $('#' + $shape);
     return {
         fill: function(color) {
+            if (color.indexOf('#') === -1) color = '#' + color;
             $shape.css('fill', color);
             return this;
         },
@@ -83,9 +84,9 @@ Savage.prototype.getIDs = function($svg) {
     if (!($svg instanceof jQuery)) {
         var classOrId = $svg.split('')[0];
         if (classOrId === '.') {
-            $svg = $('#' + $svg);
-        } else if (classOrId === '#') {
             $svg = $('.' + $svg);
+        } else if (classOrId === '#') {
+            $svg = $('#' + $svg);
         } else {
             throw new TypeError('You must enter a valid .class, #id, or jQuery object as a parameter.');
         }
