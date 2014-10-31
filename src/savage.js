@@ -52,24 +52,44 @@ Savage.prototype.convert = function(elID) {
 };
 
 /**
+ * Helper function to determine if element has
+ * specified in-line style
+ */
+Savage.prototype._inlineStyle = function (prop, el) {
+    var styles = el.attr("style"),
+         value;
+    if (styles) {
+        styles.split(";").forEach(function (e) {
+            var style = e.split(":");
+            if ($.trim(style[0]) === prop) {
+                 value = style[1];
+             }
+        });
+    }
+    return value;
+};
+
+/**
  * Use CSS to edit individual shapes by ID
  */
 Savage.prototype.edit = function($shape) {
+    var root = this;
     if (!($shape instanceof jQuery)) var $shape = $('#' + $shape);
     return {
         fill: function(color) {
             if (color.indexOf('#') === -1) color = '#' + color;
-            $shape.css('fill', color);
+            console.log(root._inlineStyle('fill', $shape))
+            $shape.attr('fill', color);
             return this;
         },
         stroke: function(color, stroke_width) {
             if (color) {
                 if (color.indexOf('#') === -1) color = '#' + color;
-                $shape.css('stroke', color);
+                $shape.attr('stroke', color);
             }
             if (stroke_width) {
                 if (!stroke_width.match(/px/)) stroke_width += "px";
-                $shape.css('stroke-width', stroke_width);
+                $shape.attr('stroke-width', stroke_width);
             }
             return this;
         }
@@ -88,7 +108,7 @@ Savage.prototype.getIDs = function($svg) {
         } else if (classOrId === '#') {
             $svg = $('#' + $svg);
         } else {
-            throw new TypeError('You must enter a valid .class, #id, or jQuery object as a parameter.');
+            throw new TypeError('Invalid parameter. Must be class, id, or jQuery element.');
         }
     }
     allShapes = $svg.children();
