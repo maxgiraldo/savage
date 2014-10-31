@@ -29,9 +29,9 @@ function Savage() {
 }
 
 /**
-    Replace image with SVG code if not using <iframe>, <object>, or <embed> elements
-**/
-
+ * Replace img with SVG code if not using <iframe>, <object>, or <embed>
+ * elements
+ */
 Savage.prototype.convert = function(elID) {
     var $img = $( '#' + elID );
     var imgID = $img.attr('id');
@@ -52,34 +52,43 @@ Savage.prototype.convert = function(elID) {
 };
 
 /**
-    Use CSS to edit individual shapes by ID
-**/
-
+ * Use CSS to edit individual shapes by ID
+ */
 Savage.prototype.edit = function($shape) {
     if (!($shape instanceof jQuery)) var $shape = $('#' + $shape);
     return {
         fill: function(color) {
-            $shape.removeAttr('style');
             $shape.css('fill', color);
             return this;
         },
         stroke: function(color, stroke_width) {
-            if (stroke_width && !stroke_width.match(/px/)) stroke_width += "px";
-            $shape.css('stroke', color);
-            $shape.css('stroke-width', stroke_width);
+            if (color) {
+                if (color.indexOf('#') === -1) color = '#' + color;
+                $shape.css('stroke', color);
+            }
+            if (stroke_width) {
+                if (!stroke_width.match(/px/)) stroke_width += "px";
+                $shape.css('stroke-width', stroke_width);
+            }
             return this;
         }
     }
 };
 
 /**
-    Return all IDs of the SVG img
-**/
-
+ * Return all IDs of the SVG img
+ */
 Savage.prototype.getIDs = function($svg) {
     var allShapes, ids = [];
     if (!($svg instanceof jQuery)) {
-        var $svg = $('#' + $svg);
+        var classOrId = $svg.split('')[0];
+        if (classOrId === '.') {
+            $svg = $('#' + $svg);
+        } else if (classOrId === '#') {
+            $svg = $('.' + $svg);
+        } else {
+            throw new TypeError('You must enter a valid .class, #id, or jQuery object as a parameter.');
+        }
     }
     allShapes = $svg.children();
     $.each(allShapes, function(key, shape) {
@@ -89,9 +98,8 @@ Savage.prototype.getIDs = function($svg) {
 };
 
 /**
-    Highlight what parts of the image are editable
-**/
-
+ * Highlight what parts of the image are editable
+ */
 Savage.prototype.highlight = function() {
 };
 

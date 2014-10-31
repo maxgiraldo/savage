@@ -2,16 +2,16 @@ var savage = new Savage();
 
 // savage.convert('sample');
 
-$('#clicky').click(function(){
-    savage.edit('outer-rect')
-        .fill('#fff');
-    var ids = savage.getIDs('sample');
-    console.log(ids)
-});
+// $('#clicky').click(function(){
+//     savage.edit('outer-rect')
+//         .fill('#fff');
+//     var ids = savage.getIDs('sample');
+// });
 
  var $outer_rect = $('#sample').contents().find('#outer-rect');
  savage.edit($outer_rect)
     .fill('#fff')
-    .stroke('#ff002d', '6px');
+    .stroke('#7f0c15', '6px');
+
 
 
