@@ -22,10 +22,6 @@
 
 function Savage() {
     this.VERSION = '0.1';
-    this.default = {
-        width: 100,
-        height: 100
-    };
 }
 
 /**
@@ -80,7 +76,7 @@ Savage.prototype.edit = function($shape) {
     return {
         fill: function(color) {
             if (color.indexOf('#') === -1) color = '#' + color;
-            console.log(root._inlineStyle('fill', $shape))
+            console.log($shape)
             $shape.attr('fill', color);
             return this;
         },
@@ -103,19 +99,11 @@ Savage.prototype.edit = function($shape) {
 /**
  * Return all IDs of the SVG img
  */
-Savage.prototype.getIDs = function($svg) {
+Savage.prototype.getIds = function($svg) {
     var allShapes, ids = [];
-    if (!($svg instanceof jQuery)) {
-        var classOrId = $svg.split('')[0];
-        if (classOrId === '.') {
-            $svg = $('.' + $svg);
-        } else if (classOrId === '#') {
-            $svg = $('#' + $svg);
-        } else {
-            throw new TypeError('Invalid parameter. Must be class, id, or jQuery element.');
-        }
-    }
-    allShapes = $svg.children();
+    if (!($svg instanceof jQuery)) $shape = $($svg);
+    $shape = $svg;
+    allShapes = $shape.children();
     $.each(allShapes, function(key, shape) {
         ids.push(shape.id);
     });
@@ -127,13 +115,35 @@ Savage.prototype.getIDs = function($svg) {
  */
 Savage.prototype.highlight = function($svg, color) {
     var root = this;
-    var ids = root.getIDs($svg);
-    console.log(ids)
-    $.each(ids, function (id) {
-        console.log(id)
-        root.edit(id)
+    var ids = root.getIds($svg);
+    root.edit(ids[0])
             .fill(color);
-    });
+    // $.each(ids, function (key, id) {
+    //     root.edit(id)
+    //         .fill(color);
+    // });
 };
+
+/**
+ * Get SVG parent element by Id
+ */
+Savage.prototype.getParentById = function(id) {
+    var svgParent,
+        element = document.getElementById(id);
+
+    // Get by canvas element Id
+    if (element instanceof HTMLIFrameElement) {
+        svgParent = $('#' + id).contents().children();
+    } else {
+        return null;
+    }
+    return svgParent;
+};
+
+Savage.prototype.getShapeById = function(parent, childId) {
+    return parent.find('#'+childId);
+};
+
+
 
 
