@@ -74,7 +74,9 @@ Savage.prototype._inlineStyle = function (prop, el) {
  */
 Savage.prototype.edit = function($shape) {
     var root = this;
-    if (!($shape instanceof jQuery)) var $shape = $('#' + $shape);
+    if (!($shape instanceof jQuery)) {
+        $shape.indexOf('#') === -1 ? $shape = $('#' + $shape) : $shape = $($shape);
+    }
     return {
         fill: function(color) {
             if (color.indexOf('#') === -1) color = '#' + color;
@@ -123,7 +125,15 @@ Savage.prototype.getIDs = function($svg) {
 /**
  * Highlight what parts of the image are editable
  */
-Savage.prototype.highlight = function() {
+Savage.prototype.highlight = function($svg, color) {
+    var root = this;
+    var ids = root.getIDs($svg);
+    console.log(ids)
+    $.each(ids, function (id) {
+        console.log(id)
+        root.edit(id)
+            .fill(color);
+    });
 };
 
 
