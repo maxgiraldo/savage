@@ -20,13 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-function Savage() {
+function Savage(iFrameId) {
     this.VERSION = '0.1';
+    this.svgParent = this._getParentById(iFrameId);
 }
 
 /**
- * Replace img with SVG code if not using <iframe>, <object>, or <embed>
- * elements
+ * Prepare svg inside of iFrame for editing
+ */
+Savage.prototype.initialize = function (iFrameId) {
+    var root = this;
+};
+
+/**
+ * Replace img with SVG code if not using <iframe>, <object>, or <embed> elements
  */
 Savage.prototype.convert = function(elID) {
     var $img = $( '#' + elID );
@@ -48,14 +55,15 @@ Savage.prototype.convert = function(elID) {
 };
 
 /**
- * Helper function to determine if element has
- * specified in-line style
+ * Helper function to determine if element has specified in-line style
  */
-Savage.prototype._inlineStyle = function (prop, el) {
-    var styles = el.attr("style"),
-         value;
+Savage.prototype._inlineStyle = function(el, property) {
+    var
+        styles = el.attr('style'),
+        value;
+
     if (styles) {
-        styles.split(";").forEach(function (e) {
+        $.each(styles.split(';'), function(i, e) {
             var style = e.split(":");
             if ($.trim(style[0]) === prop) {
                  value = style[1];
@@ -66,40 +74,9 @@ Savage.prototype._inlineStyle = function (prop, el) {
 };
 
 /**
- * Use CSS to edit individual shapes by ID
- */
-Savage.prototype.edit = function($shape) {
-    var root = this;
-    if (!($shape instanceof jQuery)) {
-        $shape.indexOf('#') === -1 ? $shape = $('#' + $shape) : $shape = $($shape);
-    }
-    return {
-        fill: function(color) {
-            if (color.indexOf('#') === -1) color = '#' + color;
-            console.log($shape)
-            $shape.attr('fill', color);
-            return this;
-        },
-        stroke: function(color, stroke_width, stroke_linecap) {
-            if (color) {
-                if (color.indexOf('#') === -1) color = '#' + color;
-                $shape.attr('stroke', color);
-            }
-            if (stroke_width) {
-                $shape.attr('stroke-width', stroke_width);
-            }
-            if (stroke_linecap) {
-                $shape.attr('stroke-linecap', stroke_linecap);
-            }
-            return this;
-        }
-    }
-};
-
-/**
  * Return all IDs of the SVG img
  */
-Savage.prototype.getIds = function($svg) {
+Savage.prototype._getIds = function($svg) {
     var allShapes, ids = [];
     if (!($svg instanceof jQuery)) $shape = $($svg);
     $shape = $svg;
@@ -111,28 +88,22 @@ Savage.prototype.getIds = function($svg) {
 };
 
 /**
- * Highlight what parts of the image are editable
+ * Determine if element you want to edit is an IFrame
  */
-Savage.prototype.highlight = function($svg, color) {
-    var root = this;
-    var ids = root.getIds($svg);
-    root.edit(ids[0])
-            .fill(color);
-    // $.each(ids, function (key, id) {
-    //     root.edit(id)
-    //         .fill(color);
-    // });
+Savage.prototype._isIFrame = function(el) {
+    return el instanceof HTMLIFrameElement;
 };
 
 /**
  * Get SVG parent element by Id
  */
-Savage.prototype.getParentById = function(id) {
-    var svgParent,
+Savage.prototype._getParentById = function(id) {
+    var
+        root = this,
+        svgParent,
         element = document.getElementById(id);
 
-    // Get by canvas element Id
-    if (element instanceof HTMLIFrameElement) {
+    if (root._isIFrame(element)) {
         svgParent = $('#' + id).contents().children();
     } else {
         return null;
@@ -140,10 +111,40 @@ Savage.prototype.getParentById = function(id) {
     return svgParent;
 };
 
-Savage.prototype.getShapeById = function(parent, childId) {
-    return parent.find('#'+childId);
+/**
+ * Get svg shape by Id
+ */
+Savage.prototype._getShapeById = function($parent, childId) {
+    return $parent.find('#'+childId);
 };
 
+/**
+ * Use CSS to edit individual shapes by ID
+ */
+Savage.prototype.edit = function(shapeId) {
+    var root = this;
+    var $shape = root._getShapeById(this.svgParent, shapeId);
 
+    return {
+        fill: function(color) {
+            if (color.indexOf('#') === -1) color = '#' + color;
+            $shape.css('fill', color);
+            return this;
+        },
+        stroke: function(color, stroke_width, stroke_linecap) {
+            if (color) {
+                if (color.indexOf('#') === -1) color = '#' + color;
+                $shape.css('stroke', color);
+            }
+            if (stroke_width) {
+                $shape.css('stroke-width', stroke_width);
+            }
+            if (stroke_linecap) {
+                $shape.css('stroke-linecap', stroke_linecap);
+            }
+            return this;
+        }
+    }
+};
 
 
