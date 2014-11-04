@@ -88,7 +88,7 @@ Savage.prototype._getIds = function($svg) {
 };
 
 /**
- * Determine if element you want to edit is an IFrame
+ * Determine if element you want to edit is an <iframe>
  */
 Savage.prototype._isIFrame = function(el) {
     return el instanceof HTMLIFrameElement;
@@ -104,7 +104,7 @@ Savage.prototype._getParentById = function(id) {
         element = document.getElementById(id);
 
     if (root._isIFrame(element)) {
-        svgParent = $('#' + id).contents().children();
+        svgParent = $('#' + id).contents().contents().children();
     } else {
         return null;
     }
@@ -114,8 +114,8 @@ Savage.prototype._getParentById = function(id) {
 /**
  * Get svg shape by Id
  */
-Savage.prototype._getShapeById = function($parent, childId) {
-    return $parent.find('#'+childId);
+Savage.prototype._getShapeByLayerId = function($parent, layerId) {
+    return $parent.find('#'+layerId).children();
 };
 
 /**
@@ -123,7 +123,7 @@ Savage.prototype._getShapeById = function($parent, childId) {
  */
 Savage.prototype.edit = function(shapeId) {
     var root = this;
-    var $shape = root._getShapeById(this.svgParent, shapeId);
+    var $shape = root._getShapeByLayerId(this.svgParent, shapeId);
 
     return {
         fill: function(color) {
