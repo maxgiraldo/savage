@@ -103,11 +103,7 @@ Savage.prototype._getParentById = function(id) {
         svgParent,
         element = document.getElementById(id);
 
-    if (root._isIFrame(element)) {
-        svgParent = $('#' + id).contents().contents().children();
-    } else {
-        return null;
-    }
+    svgParent = $('#' + id).contents().contents().children();
     return svgParent;
 };
 
