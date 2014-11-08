@@ -7,8 +7,10 @@
 
     <!-- indicate width and height in CSS px -->
     <div ui-view="">
-        <button id="change-color">change color</button>
-        <savage id="main"></savage>
+        <div ng-controller="TestController">
+            <button id="change-color" ng-click="changeColor('#ccc')">change color</button>
+            <iframe id="main" src="img/1_test_head.svg" savage></iframe>
+        </div>
     </div>
 
     <script type="text/javascript" src="./../src/lib/jquery.min.js"></script>

@@ -1,19 +1,14 @@
 angular.module('testApp', [])
+    .controller('TestController', function($scope) {
+        $scope.changeColor = function(value) {
+            $scope.img.edit('skin-color')
+        };
+    })
     .directive('savage', function() {
         return {
-            restrict: 'E',
+            restrict: 'A',
             link: function(scope, element, attrs) {
-                var img = new Savage(attrs.id);
-                element.on('click', function() {
-                    img.edit('outer-rect').fill('#000')
-                });
-            },
-            template: '<iframe id="sample" src="img/sample.svg"></iframe>'
+                scope.img = new Savage(attrs.id);
+            }
         }
     });
-// console.log($('#sample'))
-// var img = new Savage('sample');
-// img.edit('outer-rect')
-//     .fill('#5bff38')
-//     .stroke('#ff362a', 8);
-// console.log('img', img)

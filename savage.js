@@ -103,7 +103,7 @@ Savage.prototype._getParentById = function(id) {
         svgParent,
         element = document.getElementById(id);
 
-    svgParent = $('#' + id).contents().contents().children();
+    svgParent = $('#' + id).contents().children();
     return svgParent;
 };
 
@@ -120,7 +120,7 @@ Savage.prototype._getShapeByLayerId = function($parent, layerId) {
 Savage.prototype.edit = function(shapeId) {
     var root = this;
     var $shape = root._getShapeByLayerId(this.svgParent, shapeId);
-
+    console.log('$shape', $shape)
     return {
         fill: function(color) {
             if (color.indexOf('#') === -1) color = '#' + color;
